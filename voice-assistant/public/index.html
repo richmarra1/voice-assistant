@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Assistant — Rich Marra</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    #app {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid #e5e5e0;
+      padding: 2.5rem 2rem;
+      max-width: 520px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #eleven-setup {
+      width: 100%;
+      background: #faeeda;
+      border: 1px solid #EF9F27;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    #eleven-setup h3 { font-size: 14px; font-weight: 600; color: #633806; margin-bottom: 10px; }
+    #eleven-setup input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #EF9F27;
+      border-radius: 8px;
+      font-size: 12px;
+      background: white;
+      color: #333;
+      font-family: monospace;
+      margin-bottom: 8px;
+    }
+    #eleven-setup button {
+      width: 100%;
+      padding: 9px;
+      background: #534AB7;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+    }
+    #eleven-setup button:hover { background: #3C3489; }
+    #eleven-note { font-size: 11px; color: #854F0B; margin-top: 8px; }
+
+    #main { display: none; width: 100%; flex-direction: column; align-items: center; }
+    #main.visible { display: flex; }
+
+    #top-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #aaa; text-transform: uppercase; margin-bottom: 0.4rem; }
+    #app-title { font-size: 22px; font-weight: 500; color: #111; margin-bottom: 0.2rem; }
+    #app-sub { font-size: 13px; color: #888; margin-bottom: 1.25rem; }
+
+    #badges { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .badge { font-size: 11px; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
+    .badge-claude { background: #EEEDFE; color: #3C3489; }
+    .badge-eleven { background: #E1F5EE; color: #085041; }
+
+    #voice-selector { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .voice-chip {
+      font-size: 11px; padding: 5px 12px; border: 1px solid #ddd;
+      border-radius: 20px; cursor: pointer; background: #f9f9f7;
+      color: #555; font-family: inherit; transition: all 0.12s;
+    }
+    .voice-chip.active { background: #534AB7; color: white; border-color: #534AB7; }
+
+    #orb-wrap { position: relative; width: 150px; height: 150px; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; }
+    #orb {
+      width: 130px; height: 130px; border-radius: 50%;
+      background: #EEEDFE; border: 2px solid #AFA9EC;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.2s; font-size: 48px;
+      color: #534AB7; user-select: none;
+    }
+    #orb:hover { background: #CECBF6; transform: scale(1.03); }
+    #orb.listening { background: #FCEBEB; border-color: #E24B4A; color: #E24B4A; animation: orbPulse 1.2s infinite; }
+    #orb.thinking { background: #FAEEDA; border-color: #EF9F27; color: #BA7517; animation: orbPulse 0.8s infinite; }
+    #orb.speaking { background: #E1F5EE; border-color: #1D9E75; color: #085041; animation: orbPulse 0.5s infinite; }
+    @keyframes orbPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+
+    #ring { position: absolute; width: 150px; height: 150px; border-radius: 50%; border: 1.5px solid transparent; opacity: 0; top: 0; left: 0; pointer-events: none; }
+    #orb.listening ~ #ring { animation: ringExpand 1.2s infinite; border-color: #E24B4A; }
+    @keyframes ringExpand { 0%{transform:scale(0.85);opacity:0.5} 100%{transform:scale(1.25);opacity:0} }
+
+    #status-text { font-size: 15px; font-weight: 500; color: #555; margin-bottom: 0.4rem; min-height: 24px; text-align: center; }
+    #transcript-text { font-size: 13px; color: #aaa; margin-bottom: 1.5rem; min-height: 20px; text-align: center; font-style: italic; max-width: 380px; }
+
+    #commands { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.5rem; }
+    .cmd-chip {
+      font-size: 12px; padding: 7px 14px; border: 1px solid #ddd;
+      border-radius: 20px; cursor: pointer; background: #f9f9f7;
+      color: #555; transition: all 0.12s; font-family: inherit;
+    }
+    .cmd-chip:hover { border-color: #534AB7; color: #534AB7; background: #EEEDFE; }
+
+    #response-card { width: 100%; background: #f9f9f7; border: 1px solid #e5e5e0; border-radius: 12px; padding: 1rem 1.25rem; display: none; margin-bottom: 1rem; }
+    #response-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: #E1F5EE; color: #085041; display: inline-block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    #response-text { font-size: 14px; line-height: 1.7; color: #222; }
+
+    #stop-btn { font-size: 12px; padding: 6px 16px; border: 1px solid #ddd; border-radius: 20px; background: transparent; color: #888; cursor: pointer; display: none; font-family: inherit; margin-bottom: 1rem; }
+    #stop-btn:hover { color: #E24B4A; border-color: #E24B4A; }
+
+    #voice-note { font-size: 11px; color: #bbb; text-align: center; max-width: 360px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div id="eleven-setup">
+    <h3>Enter your ElevenLabs API key</h3>
+    <input type="password" id="eleven-key" placeholder="Your ElevenLabs key..." autocomplete="off">
+    <button onclick="saveKey()">Connect</button>
+    <p id="eleven-note">Your key stays local in this browser session only.</p>
+  </div>
+
+  <div id="main">
+    <div id="top-label">Voice Assistant</div>
+    <div id="app-title">Hey Rich, what do you need?</div>
+    <div id="app-sub">Tap the orb and speak, or click a command</div>
+
+    <div id="badges">
+      <span class="badge badge-claude">Claude Sonnet 4.6</span>
+      <span class="badge badge-eleven">ElevenLabs Voice</span>
+    </div>
+
+    <div id="voice-selector">
+      <button class="voice-chip active" onclick="setVoice('pNInz6obpgDQGcFmaJgB', this)">Adam — Deep</button>
+      <button class="voice-chip" onclick="setVoice('VR6AewLTigWG4xSOukaG', this)">Arnold — Crisp</button>
+      <button class="voice-chip" onclick="setVoice('ErXwobaYiN019PkySvjV', this)">Antoni — Warm</button>
+      <button class="voice-chip" onclick="setVoice('EXAVITQu4vr4xnSDxMaL', this)">Bella — Clear</button>
+    </div>
+
+    <div id="orb-wrap">
+      <div id="orb" onclick="toggleListen()">🎤</div>
+      <div id="ring"></div>
+    </div>
+
+    <div id="status-text">Ready</div>
+    <div id="transcript-text"></div>
+
+    <div id="commands">
+      <div class="cmd-chip" onclick="runCommand('Read my latest emails')">📬 Read latest emails</div>
+      <div class="cmd-chip" onclick="runCommand('Summarize my unread emails')">📋 Summarize unread</div>
+      <div class="cmd-chip" onclick="runCommand('Any urgent emails I should know about?')">🔔 Urgent emails</div>
+      <div class="cmd-chip" onclick="runCommand('Who emailed me today?')">👤 Who emailed me today</div>
+      <div class="cmd-chip" onclick="runCommand('Draft a reply to my most recent email saying I will follow up by end of day')">✏️ Draft a reply</div>
+      <div class="cmd-chip" onclick="runCommand('What should I focus on today?')">🎯 What to focus on today</div>
+    </div>
+
+    <div id="response-card">
+      <div id="response-tag">Assistant</div>
+      <div id="response-text"></div>
+    </div>
+
+    <button id="stop-btn" onclick="stopSpeaking()">⏹ Stop speaking</button>
+    <div id="voice-note">Best in Chrome. Allow microphone access when prompted.</div>
+  </div>
+</div>
+
+<script>
+let ELEVEN_KEY = "";
+let ELEVEN_VOICE_ID = "pNInz6obpgDQGcFmaJgB";
+let recognition = null;
+let isListening = false;
+let currentAudio = null;
+
+const orb = document.getElementById("orb");
+const statusText = document.getElementById("status-text");
+const transcriptText = document.getElementById("transcript-text");
+const responseCard = document.getElementById("response-card");
+const responseTextEl = document.getElementById("response-text");
+const stopBtn = document.getElementById("stop-btn");
+
+function saveKey() {
+  const ek = document.getElementById("eleven-key").value.trim();
+  if (!ek) { alert("Please enter your ElevenLabs API key."); return; }
+  ELEVEN_KEY = ek;
+  document.getElementById("eleven-setup").style.display = "none";
+  document.getElementById("main").classList.add("visible");
+}
+
+function setVoice(voiceId, btn) {
+  ELEVEN_VOICE_ID = voiceId;
+  document.querySelectorAll(".voice-chip").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+function setOrbState(state) {
+  orb.className = state;
+  const icons = { "": "🎤", listening: "👂", thinking: "⏳", speaking: "🔊" };
+  orb.textContent = icons[state] || "🎤";
+}
+
+function setStatus(text, transcript) {
+  statusText.textContent = text;
+  if (transcript !== undefined) transcriptText.textContent = transcript;
+}
+
+function setupRecognition() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { setStatus("Voice not supported. Use Chrome."); return false; }
+  recognition = new SR();
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.lang = "en-US";
+  recognition.onstart = () => { isListening = true; setOrbState("listening"); setStatus("Listening...", ""); };
+  recognition.onresult = (e) => {
+    const interim = Array.from(e.results).map(r => r[0].transcript).join("");
+    transcriptText.textContent = `"${interim}"`;
+    if (e.results[e.results.length - 1].isFinal) { stopListeningState(); processCommand(interim); }
+  };
+  recognition.onerror = (e) => { stopListeningState(); setStatus(e.error === "not-allowed" ? "Mic denied. Allow microphone in Chrome settings." : "Voice error: " + e.error, ""); };
+  recognition.onend = () => { if (isListening) stopListeningState(); };
+  return true;
+}
+
+function stopListeningState() {
+  isListening = false;
+  if (recognition) try { recognition.stop(); } catch(e) {}
+  setOrbState("");
+}
+
+function toggleListen() {
+  if (isListening) { stopListeningState(); setStatus("Ready", ""); return; }
+  if (!recognition && !setupRecognition()) return;
+  stopSpeaking();
+  try { recognition.start(); }
+  catch(e) { recognition = null; if (setupRecognition()) try { recognition.start(); } catch(e2) { setStatus("Could not start mic. Try a command chip.", ""); } }
+}
+
+function runCommand(text) {
+  stopSpeaking();
+  stopListeningState();
+  transcriptText.textContent = `"${text}"`;
+  processCommand(text);
+}
+
+async function processCommand(command) {
+  setOrbState("thinking");
+  setStatus("Thinking...");
+  responseCard.style.display = "none";
+
+  try {
+    const resp = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: command })
+    });
+
+    const data = await resp.json();
+    if (data.error) { setOrbState(""); setStatus("Error: " + data.error, ""); return; }
+
+    responseTextEl.textContent = data.reply;
+    responseCard.style.display = "block";
+    await speakWithElevenLabs(data.reply);
+
+  } catch(err) {
+    setOrbState("");
+    setStatus("Network error. Check connection and try again.", "");
+  }
+}
+
+async function speakWithElevenLabs(text) {
+  setOrbState("speaking");
+  setStatus("Speaking...");
+  stopBtn.style.display = "inline-flex";
+
+  try {
+    const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "xi-api-key": ELEVEN_KEY },
+      body: JSON.stringify({
+        text: text,
+        model_id: "eleven_monolingual_v1",
+        voice_settings: { stability: 0.5, similarity_boost: 0.75, style: 0.2, use_speaker_boost: true }
+      })
+    });
+
+    if (!resp.ok) throw new Error("ElevenLabs error");
+
+    const audioBlob = await resp.blob();
+    const audioUrl = URL.createObjectURL(audioBlob);
+    currentAudio = new Audio(audioUrl);
+    currentAudio.onended = () => { setOrbState(""); setStatus("Done. Tap orb to ask something else.", ""); stopBtn.style.display = "none"; URL.revokeObjectURL(audioUrl); };
+    currentAudio.onerror = () => { setOrbState(""); setStatus("Audio error.", ""); stopBtn.style.display = "none"; };
+    await currentAudio.play();
+
+  } catch(err) {
+    setStatus("ElevenLabs error. Check your key.", "");
+    setOrbState("");
+    stopBtn.style.display = "none";
+  }
+}
+
+function stopSpeaking() {
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  stopBtn.style.display = "none";
+  setOrbState("");
+}
+
+document.getElementById("eleven-key").addEventListener("keydown", (e) => { if (e.key === "Enter") saveKey(); });
+</script>
+</body>
+</html>
