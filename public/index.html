@@ -8,7 +8,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #0f1117;
+      background: #f0f2f8;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -16,11 +16,11 @@
       padding: 1.5rem;
     }
     #app {
-      background: #1a1d27;
+      background: white;
       border-radius: 20px;
-      border: 1px solid #2a2d3a;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset;
-      padding: 2.5rem 2rem;
+      border: 1px solid #e0e4f0;
+      box-shadow: 0 8px 40px rgba(80,90,160,0.10), 0 1.5px 0 rgba(255,255,255,0.8) inset;
+      padding: 2.5rem 2rem 1.5rem 2rem;
       max-width: 480px;
       width: 100%;
       display: flex;
@@ -29,21 +29,21 @@
     }
     #eleven-setup {
       width: 100%;
-      background: #1e2030;
-      border: 1px solid #3a3d50;
+      background: #f8f9fc;
+      border: 1px solid #e0e4f0;
       border-radius: 12px;
       padding: 1.5rem;
       margin-bottom: 1.5rem;
     }
-    #eleven-setup h3 { font-size: 13px; font-weight: 600; color: #a0a8c0; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+    #eleven-setup h3 { font-size: 12px; font-weight: 700; color: #6b7280; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
     #eleven-setup input {
       width: 100%;
       padding: 10px 14px;
-      border: 1px solid #3a3d50;
+      border: 1px solid #e0e4f0;
       border-radius: 8px;
       font-size: 13px;
-      background: #0f1117;
-      color: #e0e4f0;
+      background: white;
+      color: #1a1d2e;
       font-family: monospace;
       margin-bottom: 10px;
       outline: none;
@@ -52,7 +52,7 @@
     #eleven-setup button {
       width: 100%;
       padding: 10px;
-      background: #6366f1;
+      background: #1e2240;
       color: white;
       border: none;
       border-radius: 8px;
@@ -63,120 +63,128 @@
       letter-spacing: 0.03em;
       transition: background 0.15s;
     }
-    #eleven-setup button:hover { background: #4f51d9; }
-    #eleven-note { font-size: 11px; color: #5a6080; margin-top: 10px; text-align: center; }
+    #eleven-setup button:hover { background: #2a3060; }
+    #eleven-note { font-size: 11px; color: #9ca3af; margin-top: 10px; text-align: center; }
 
     #main { display: none; width: 100%; flex-direction: column; align-items: center; }
     #main.visible { display: flex; }
 
     #top-label {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 800;
       letter-spacing: 0.12em;
-      color: #6366f1;
+      color: #1e2240;
       text-transform: uppercase;
       margin-bottom: 0.3rem;
       text-align: center;
     }
-    #app-title { font-size: 18px; font-weight: 400; color: #c0c8e0; margin-bottom: 0.25rem; text-align: center; }
-    #app-sub { font-size: 12px; color: #4a5070; margin-bottom: 2rem; text-align: center; }
+    #app-title { font-size: 17px; font-weight: 400; color: #4b5280; margin-bottom: 0.25rem; text-align: center; }
+    #app-sub { font-size: 12px; color: #9ca3af; margin-bottom: 1.75rem; text-align: center; }
 
-    #orb-wrap { position: relative; width: 160px; height: 160px; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; }
+    #orb-wrap { position: relative; width: 160px; height: 160px; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: center; }
     #orb {
       width: 140px; height: 140px; border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #3a3d6e, #1a1d35);
-      border: 1.5px solid #3a3d6e;
-      box-shadow: 0 0 40px rgba(99,102,241,0.15), 0 8px 32px rgba(0,0,0,0.4);
+      background: radial-gradient(circle at 35% 35%, #e8eaf8, #c8ccee);
+      border: 1.5px solid #c0c4e8;
+      box-shadow: 0 4px 24px rgba(80,90,200,0.12), 0 1px 0 rgba(255,255,255,0.9) inset;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; transition: all 0.2s; font-size: 44px;
       user-select: none;
     }
-    #orb:hover { box-shadow: 0 0 60px rgba(99,102,241,0.3), 0 8px 32px rgba(0,0,0,0.4); transform: scale(1.03); }
-    #orb.listening { background: radial-gradient(circle at 35% 35%, #6e2a2a, #351a1a); border-color: #e24b4a; box-shadow: 0 0 40px rgba(226,75,74,0.3); animation: orbPulse 1.2s infinite; }
-    #orb.thinking { background: radial-gradient(circle at 35% 35%, #6e5a2a, #35301a); border-color: #d4a020; box-shadow: 0 0 40px rgba(212,160,32,0.3); animation: orbPulse 0.8s infinite; }
-    #orb.speaking { background: radial-gradient(circle at 35% 35%, #1a5a3a, #0a2a1a); border-color: #1d9e75; box-shadow: 0 0 40px rgba(29,158,117,0.3); animation: orbPulse 0.5s infinite; }
+    #orb:hover { box-shadow: 0 8px 32px rgba(80,90,200,0.2); transform: scale(1.03); }
+    #orb.listening { background: radial-gradient(circle at 35% 35%, #fde8e8, #f8c8c8); border-color: #e24b4a; box-shadow: 0 4px 24px rgba(226,75,74,0.2); animation: orbPulse 1.2s infinite; }
+    #orb.thinking { background: radial-gradient(circle at 35% 35%, #fef3e2, #fde8c0); border-color: #d4a020; box-shadow: 0 4px 24px rgba(212,160,32,0.2); animation: orbPulse 0.8s infinite; }
+    #orb.speaking { background: radial-gradient(circle at 35% 35%, #e2f5ee, #c0ecd8); border-color: #1d9e75; box-shadow: 0 4px 24px rgba(29,158,117,0.2); animation: orbPulse 0.5s infinite; }
     @keyframes orbPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
 
     #ring { position: absolute; width: 160px; height: 160px; border-radius: 50%; border: 1px solid transparent; opacity: 0; top: 0; left: 0; pointer-events: none; }
     #orb.listening ~ #ring { animation: ringExpand 1.2s infinite; border-color: #e24b4a; }
     @keyframes ringExpand { 0%{transform:scale(0.85);opacity:0.4} 100%{transform:scale(1.3);opacity:0} }
 
-    #status-text { font-size: 14px; font-weight: 500; color: #6068a0; margin-bottom: 0.3rem; min-height: 22px; text-align: center; letter-spacing: 0.02em; }
-    #transcript-text { font-size: 12px; color: #3a4060; margin-bottom: 1.5rem; min-height: 18px; text-align: center; font-style: italic; max-width: 360px; }
+    #status-text { font-size: 14px; font-weight: 600; color: #6366f1; margin-bottom: 0.3rem; min-height: 22px; text-align: center; letter-spacing: 0.02em; }
+    #transcript-text { font-size: 12px; color: #9ca3af; margin-bottom: 1.25rem; min-height: 18px; text-align: center; font-style: italic; max-width: 360px; }
 
     #stop-btn {
       font-size: 12px; padding: 7px 20px;
-      border: 1px solid #4a1a1a;
-      border-radius: 20px; background: #2a1010;
+      border: 1px solid #fccaca;
+      border-radius: 20px; background: #fff5f5;
       color: #e24b4a; cursor: pointer;
       display: none; font-family: inherit;
-      font-weight: 600; margin-bottom: 1.5rem;
+      font-weight: 600; margin-bottom: 1.25rem;
       transition: all 0.15s; letter-spacing: 0.03em;
     }
-    #stop-btn:hover { background: #3a1515; border-color: #e24b4a; }
+    #stop-btn:hover { background: #fee2e2; border-color: #e24b4a; }
 
     #commands-label {
       font-size: 10px; font-weight: 700;
-      letter-spacing: 0.12em; color: #3a4060;
-      text-transform: uppercase; margin-bottom: 0.75rem;
-      align-self: flex-start;
+      letter-spacing: 0.12em; color: #9ca3af;
+      text-transform: uppercase; margin-bottom: 0.6rem;
+      width: 100%; text-align: left;
+      padding-left: 2px;
     }
-    #commands { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.75rem; width: 100%; }
+    #commands { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start; margin-bottom: 1.5rem; width: 100%; }
     .cmd-chip {
-      font-size: 12px; padding: 8px 16px;
-      border: 1px solid #2a2d3a;
+      font-size: 12px; padding: 8px 14px;
+      border: 1px solid #e0e4f0;
       border-radius: 8px; cursor: pointer;
-      background: #1e2030; color: #8090b0;
+      background: #f8f9fc; color: #4b5280;
       transition: all 0.15s; font-family: inherit;
       font-weight: 500;
     }
-    .cmd-chip:hover { border-color: #6366f1; color: #a0a8f0; background: #22253a; }
+    .cmd-chip:hover { border-color: #6366f1; color: #6366f1; background: #eef0fc; }
 
     #response-card {
-      width: 100%; background: #1e2030;
-      border: 1px solid #2a2d3a;
+      width: 100%; background: #f8f9fc;
+      border: 1px solid #e0e4f0;
       border-radius: 12px; padding: 1.25rem;
       display: none; margin-bottom: 1.5rem;
     }
     #response-tag {
       font-size: 10px; font-weight: 700;
       padding: 3px 10px; border-radius: 6px;
-      background: #252840; color: #6366f1;
+      background: #eef0fc; color: #6366f1;
       display: inline-block; margin-bottom: 10px;
       text-transform: uppercase; letter-spacing: 0.1em;
-      border: 1px solid #3a3d6e;
+      border: 1px solid #c8ccee;
     }
-    #response-text { font-size: 14px; line-height: 1.75; color: #c0c8e0; }
+    #response-text { font-size: 14px; line-height: 1.75; color: #1a1d2e; }
 
     #voice-selector-wrap {
       width: 100%; margin-top: 0.5rem;
-      border-top: 1px solid #2a2d3a;
+      border-top: 1px solid #e0e4f0;
       padding-top: 1.25rem;
     }
     #voice-selector-label {
       font-size: 10px; font-weight: 700;
-      letter-spacing: 0.12em; color: #3a4060;
+      letter-spacing: 0.12em; color: #9ca3af;
       text-transform: uppercase; margin-bottom: 0.75rem;
       text-align: center;
     }
     #voice-selector { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 1.25rem; }
     .voice-chip {
       font-size: 11px; padding: 6px 14px;
-      border: 1px solid #2a2d3a;
+      border: 1px solid #e0e4f0;
       border-radius: 6px; cursor: pointer;
-      background: #1e2030; color: #5a6080;
+      background: #f8f9fc; color: #6b7280;
       font-family: inherit; transition: all 0.15s;
       font-weight: 500;
     }
-    .voice-chip.active { background: #252840; color: #6366f1; border-color: #3a3d6e; }
-    .voice-chip:hover { border-color: #4a4d7a; color: #8090c0; }
+    .voice-chip.active { background: #eef0fc; color: #6366f1; border-color: #c8ccee; font-weight: 600; }
+    .voice-chip:hover { border-color: #6366f1; color: #6366f1; }
 
-    #badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    #badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem; }
     .badge { font-size: 10px; padding: 4px 12px; border-radius: 6px; font-weight: 600; letter-spacing: 0.05em; }
-    .badge-claude { background: #1e2030; color: #4a4d7a; border: 1px solid #2a2d3a; }
-    .badge-eleven { background: #1e2030; color: #4a4d7a; border: 1px solid #2a2d3a; }
+    .badge-claude { background: #f8f9fc; color: #9ca3af; border: 1px solid #e0e4f0; }
+    .badge-eleven { background: #f8f9fc; color: #9ca3af; border: 1px solid #e0e4f0; }
 
-    #voice-note { font-size: 10px; color: #2a3050; text-align: center; max-width: 360px; line-height: 1.6; margin-top: 1rem; }
+    #built-by {
+      font-size: 11px; color: #c0c4d0; text-align: center;
+      margin-top: 0.5rem; letter-spacing: 0.02em;
+    }
+    #built-by a { color: #6366f1; text-decoration: none; font-weight: 600; }
+    #built-by a:hover { text-decoration: underline; }
+
+    #voice-note { font-size: 10px; color: #c0c4d0; text-align: center; max-width: 360px; line-height: 1.6; margin-top: 0.5rem; }
   </style>
 </head>
 <body>
@@ -230,6 +238,7 @@
         <span class="badge badge-claude">Claude Sonnet 4.6</span>
         <span class="badge badge-eleven">ElevenLabs Voice</span>
       </div>
+      <div id="built-by">Built by <a href="https://github.com/richmarra1" target="_blank">RichBuildsAI.dev</a></div>
     </div>
 
     <div id="voice-note">Best in Chrome. Allow microphone access when prompted.</div>
