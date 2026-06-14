@@ -2,5 +2,5 @@
   "name": "voice-assistant",
   "version": "1.0.0",
   "description": "Voice-activated AI assistant by Rich Marra",
-  "engines": { "node": "18.x" }
+  "engines": { "node": "24.x" }
 }
