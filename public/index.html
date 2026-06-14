@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Voice Assistant — Rich Marra</title>
+  <title>Vox — AI Voice Assistant</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -73,14 +73,6 @@
     .badge-claude { background: #EEEDFE; color: #3C3489; }
     .badge-eleven { background: #E1F5EE; color: #085041; }
 
-    #voice-selector { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; justify-content: center; }
-    .voice-chip {
-      font-size: 11px; padding: 5px 12px; border: 1px solid #ddd;
-      border-radius: 20px; cursor: pointer; background: #f9f9f7;
-      color: #555; font-family: inherit; transition: all 0.12s;
-    }
-    .voice-chip.active { background: #534AB7; color: white; border-color: #534AB7; }
-
     #orb-wrap { position: relative; width: 150px; height: 150px; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; }
     #orb {
       width: 130px; height: 130px; border-radius: 50%;
@@ -100,9 +92,13 @@
     @keyframes ringExpand { 0%{transform:scale(0.85);opacity:0.5} 100%{transform:scale(1.25);opacity:0} }
 
     #status-text { font-size: 15px; font-weight: 500; color: #555; margin-bottom: 0.4rem; min-height: 24px; text-align: center; }
-    #transcript-text { font-size: 13px; color: #aaa; margin-bottom: 1.5rem; min-height: 20px; text-align: center; font-style: italic; max-width: 380px; }
+    #transcript-text { font-size: 13px; color: #aaa; margin-bottom: 1rem; min-height: 20px; text-align: center; font-style: italic; max-width: 380px; }
 
-    #commands { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.5rem; }
+    #stop-btn { font-size: 12px; padding: 6px 16px; border: 1px solid #ddd; border-radius: 20px; background: transparent; color: #888; cursor: pointer; display: none; font-family: inherit; margin-bottom: 1.25rem; }
+    #stop-btn:hover { color: #E24B4A; border-color: #E24B4A; }
+
+    #commands-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #aaa; text-transform: uppercase; margin-bottom: 0.6rem; align-self: flex-start; }
+    #commands { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.5rem; width: 100%; }
     .cmd-chip {
       font-size: 12px; padding: 7px 14px; border: 1px solid #ddd;
       border-radius: 20px; cursor: pointer; background: #f9f9f7;
@@ -114,10 +110,17 @@
     #response-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: #E1F5EE; color: #085041; display: inline-block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
     #response-text { font-size: 14px; line-height: 1.7; color: #222; }
 
-    #stop-btn { font-size: 12px; padding: 6px 16px; border: 1px solid #ddd; border-radius: 20px; background: transparent; color: #888; cursor: pointer; display: none; font-family: inherit; margin-bottom: 1rem; }
-    #stop-btn:hover { color: #E24B4A; border-color: #E24B4A; }
+    #voice-selector-wrap { width: 100%; margin-top: 1rem; border-top: 1px solid #e5e5e0; padding-top: 1rem; }
+    #voice-selector-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #aaa; text-transform: uppercase; margin-bottom: 0.6rem; }
+    #voice-selector { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    .voice-chip {
+      font-size: 11px; padding: 5px 12px; border: 1px solid #ddd;
+      border-radius: 20px; cursor: pointer; background: #f9f9f7;
+      color: #555; font-family: inherit; transition: all 0.12s;
+    }
+    .voice-chip.active { background: #534AB7; color: white; border-color: #534AB7; }
 
-    #voice-note { font-size: 11px; color: #bbb; text-align: center; max-width: 360px; line-height: 1.6; }
+    #voice-note { font-size: 11px; color: #bbb; text-align: center; max-width: 360px; line-height: 1.6; margin-top: 1rem; }
   </style>
 </head>
 <body>
@@ -131,19 +134,12 @@
 
   <div id="main">
     <div id="top-label">Voice Assistant</div>
-    <div id="app-title">Hey Rich, what do you need?</div>
+    <div id="app-title">Hey, what do you need?</div>
     <div id="app-sub">Tap the orb and speak, or click a command</div>
 
     <div id="badges">
       <span class="badge badge-claude">Claude Sonnet 4.6</span>
       <span class="badge badge-eleven">ElevenLabs Voice</span>
-    </div>
-
-    <div id="voice-selector">
-      <button class="voice-chip active" onclick="setVoice('nPczCjzI2devNBz1zQrb', this)">Adam — Deep</button>
-      <button class="voice-chip" onclick="setVoice('onwK4e9ZLuTAKqWW03F9', this)">Daniel — British</button>
-      <button class="voice-chip" onclick="setVoice('ErXwobaYiN019PkySvjV', this)">Charlie — Aussie</button>
-      <button class="voice-chip" onclick="setVoice('EXAVITQu4vr4xnSDxMaL', this)">Bella — Clear</button>
     </div>
 
     <div id="orb-wrap">
@@ -154,21 +150,33 @@
     <div id="status-text">Ready</div>
     <div id="transcript-text"></div>
 
+    <button id="stop-btn" onclick="stopSpeaking()">⏹ Stop speaking</button>
+
+    <div id="commands-label">Commands</div>
     <div id="commands">
-      <div class="cmd-chip" onclick="runCommand('Read my latest emails')">📬 Read latest emails</div>
-      <div class="cmd-chip" onclick="runCommand('Summarize my unread emails')">📋 Summarize unread</div>
-      <div class="cmd-chip" onclick="runCommand('Any urgent emails I should know about?')">🔔 Urgent emails</div>
-      <div class="cmd-chip" onclick="runCommand('Who emailed me today?')">👤 Who emailed me today</div>
-      <div class="cmd-chip" onclick="runCommand('Draft a reply to my most recent email saying I will follow up by end of day')">✏️ Draft a reply</div>
-      <div class="cmd-chip" onclick="runCommand('What should I focus on today?')">🎯 What to focus on today</div>
+      <div class="cmd-chip" onclick="runCommand('Read my latest messages')">📬 Latest messages</div>
+      <div class="cmd-chip" onclick="runCommand('Summarize my unread messages')">📋 Summarize unread</div>
+      <div class="cmd-chip" onclick="runCommand('Any urgent messages I should know about?')">🔔 Urgent messages</div>
+      <div class="cmd-chip" onclick="runCommand('Who messaged me today?')">👤 Who messaged me</div>
+      <div class="cmd-chip" onclick="runCommand('Draft a friendly reply to my most recent message')">✏️ Draft a reply</div>
+      <div class="cmd-chip" onclick="runCommand('What should I focus on today?')">🎯 What to focus on</div>
     </div>
 
     <div id="response-card">
-      <div id="response-tag">Assistant</div>
+      <div id="response-tag">Vox</div>
       <div id="response-text"></div>
     </div>
 
-    <button id="stop-btn" onclick="stopSpeaking()">⏹ Stop speaking</button>     <div id="commands-label">Commands</div>
+    <div id="voice-selector-wrap">
+      <div id="voice-selector-label">Voice</div>
+      <div id="voice-selector">
+        <button class="voice-chip active" onclick="setVoice('nPczCjzI2devNBz1zQrb', this)">Brian — Deep</button>
+        <button class="voice-chip" onclick="setVoice('onwK4e9ZLuTAKqWW03F9', this)">Daniel — British</button>
+        <button class="voice-chip" onclick="setVoice('IKne3meq5aSn9XLyUdCD', this)">Charlie — Aussie</button>
+        <button class="voice-chip" onclick="setVoice('EXAVITQu4vr4xnSDxMaL', this)">Bella — Clear</button>
+      </div>
+    </div>
+
     <div id="voice-note">Best in Chrome. Allow microphone access when prompted.</div>
   </div>
 </div>
