@@ -8,19 +8,20 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f5f5f0;
+      background: #0f1117;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 1rem;
+      padding: 1.5rem;
     }
     #app {
-      background: white;
-      border-radius: 16px;
-      border: 1px solid #e5e5e0;
+      background: #1a1d27;
+      border-radius: 20px;
+      border: 1px solid #2a2d3a;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset;
       padding: 2.5rem 2rem;
-      max-width: 520px;
+      max-width: 480px;
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -28,105 +29,160 @@
     }
     #eleven-setup {
       width: 100%;
-      background: #faeeda;
-      border: 1px solid #EF9F27;
+      background: #1e2030;
+      border: 1px solid #3a3d50;
       border-radius: 12px;
-      padding: 1.25rem;
+      padding: 1.5rem;
       margin-bottom: 1.5rem;
     }
-    #eleven-setup h3 { font-size: 14px; font-weight: 600; color: #633806; margin-bottom: 10px; }
+    #eleven-setup h3 { font-size: 13px; font-weight: 600; color: #a0a8c0; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
     #eleven-setup input {
       width: 100%;
-      padding: 8px 12px;
-      border: 1px solid #EF9F27;
+      padding: 10px 14px;
+      border: 1px solid #3a3d50;
       border-radius: 8px;
-      font-size: 12px;
-      background: white;
-      color: #333;
+      font-size: 13px;
+      background: #0f1117;
+      color: #e0e4f0;
       font-family: monospace;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      outline: none;
     }
+    #eleven-setup input:focus { border-color: #6366f1; }
     #eleven-setup button {
       width: 100%;
-      padding: 9px;
-      background: #534AB7;
+      padding: 10px;
+      background: #6366f1;
       color: white;
       border: none;
       border-radius: 8px;
       font-size: 13px;
       cursor: pointer;
       font-family: inherit;
-      font-weight: 500;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      transition: background 0.15s;
     }
-    #eleven-setup button:hover { background: #3C3489; }
-    #eleven-note { font-size: 11px; color: #854F0B; margin-top: 8px; }
+    #eleven-setup button:hover { background: #4f51d9; }
+    #eleven-note { font-size: 11px; color: #5a6080; margin-top: 10px; text-align: center; }
 
     #main { display: none; width: 100%; flex-direction: column; align-items: center; }
     #main.visible { display: flex; }
 
-    #top-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #aaa; text-transform: uppercase; margin-bottom: 0.4rem; }
-    #app-title { font-size: 42px; font-weight: 500; color: #111; margin-bottom: 0.2rem; }
-    #app-sub { font-size: 13px; color: #888; margin-bottom: 1.25rem; }
+    #top-label {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: #6366f1;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+      text-align: center;
+    }
+    #app-title { font-size: 18px; font-weight: 400; color: #c0c8e0; margin-bottom: 0.25rem; text-align: center; }
+    #app-sub { font-size: 12px; color: #4a5070; margin-bottom: 2rem; text-align: center; }
 
-    #badges { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; justify-content: center; }
-    .badge { font-size: 11px; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
-    .badge-claude { background: #EEEDFE; color: #3C3489; }
-    .badge-eleven { background: #E1F5EE; color: #085041; }
-
-    #orb-wrap { position: relative; width: 150px; height: 150px; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; }
+    #orb-wrap { position: relative; width: 160px; height: 160px; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; }
     #orb {
-      width: 130px; height: 130px; border-radius: 50%;
-      background: #EEEDFE; border: 2px solid #AFA9EC;
+      width: 140px; height: 140px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #3a3d6e, #1a1d35);
+      border: 1.5px solid #3a3d6e;
+      box-shadow: 0 0 40px rgba(99,102,241,0.15), 0 8px 32px rgba(0,0,0,0.4);
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: all 0.2s; font-size: 48px;
-      color: #534AB7; user-select: none;
+      cursor: pointer; transition: all 0.2s; font-size: 44px;
+      user-select: none;
     }
-    #orb:hover { background: #CECBF6; transform: scale(1.03); }
-    #orb.listening { background: #FCEBEB; border-color: #E24B4A; color: #E24B4A; animation: orbPulse 1.2s infinite; }
-    #orb.thinking { background: #FAEEDA; border-color: #EF9F27; color: #BA7517; animation: orbPulse 0.8s infinite; }
-    #orb.speaking { background: #E1F5EE; border-color: #1D9E75; color: #085041; animation: orbPulse 0.5s infinite; }
-    @keyframes orbPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+    #orb:hover { box-shadow: 0 0 60px rgba(99,102,241,0.3), 0 8px 32px rgba(0,0,0,0.4); transform: scale(1.03); }
+    #orb.listening { background: radial-gradient(circle at 35% 35%, #6e2a2a, #351a1a); border-color: #e24b4a; box-shadow: 0 0 40px rgba(226,75,74,0.3); animation: orbPulse 1.2s infinite; }
+    #orb.thinking { background: radial-gradient(circle at 35% 35%, #6e5a2a, #35301a); border-color: #d4a020; box-shadow: 0 0 40px rgba(212,160,32,0.3); animation: orbPulse 0.8s infinite; }
+    #orb.speaking { background: radial-gradient(circle at 35% 35%, #1a5a3a, #0a2a1a); border-color: #1d9e75; box-shadow: 0 0 40px rgba(29,158,117,0.3); animation: orbPulse 0.5s infinite; }
+    @keyframes orbPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
 
-    #ring { position: absolute; width: 150px; height: 150px; border-radius: 50%; border: 1.5px solid transparent; opacity: 0; top: 0; left: 0; pointer-events: none; }
-    #orb.listening ~ #ring { animation: ringExpand 1.2s infinite; border-color: #E24B4A; }
-    @keyframes ringExpand { 0%{transform:scale(0.85);opacity:0.5} 100%{transform:scale(1.25);opacity:0} }
+    #ring { position: absolute; width: 160px; height: 160px; border-radius: 50%; border: 1px solid transparent; opacity: 0; top: 0; left: 0; pointer-events: none; }
+    #orb.listening ~ #ring { animation: ringExpand 1.2s infinite; border-color: #e24b4a; }
+    @keyframes ringExpand { 0%{transform:scale(0.85);opacity:0.4} 100%{transform:scale(1.3);opacity:0} }
 
-    #status-text { font-size: 15px; font-weight: 500; color: #555; margin-bottom: 0.4rem; min-height: 24px; text-align: center; }
-    #transcript-text { font-size: 13px; color: #aaa; margin-bottom: 1rem; min-height: 20px; text-align: center; font-style: italic; max-width: 380px; }
+    #status-text { font-size: 14px; font-weight: 500; color: #6068a0; margin-bottom: 0.3rem; min-height: 22px; text-align: center; letter-spacing: 0.02em; }
+    #transcript-text { font-size: 12px; color: #3a4060; margin-bottom: 1.5rem; min-height: 18px; text-align: center; font-style: italic; max-width: 360px; }
 
-    #stop-btn { font-size: 12px; padding: 6px 16px; border: 1px solid #ddd; border-radius: 20px; background: transparent; color: #888; cursor: pointer; display: none; font-family: inherit; margin-bottom: 1.25rem; }
-    #stop-btn:hover { color: #E24B4A; border-color: #E24B4A; }
+    #stop-btn {
+      font-size: 12px; padding: 7px 20px;
+      border: 1px solid #4a1a1a;
+      border-radius: 20px; background: #2a1010;
+      color: #e24b4a; cursor: pointer;
+      display: none; font-family: inherit;
+      font-weight: 600; margin-bottom: 1.5rem;
+      transition: all 0.15s; letter-spacing: 0.03em;
+    }
+    #stop-btn:hover { background: #3a1515; border-color: #e24b4a; }
 
-    #commands-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #aaa; text-transform: uppercase; margin-bottom: 0.6rem; align-self: flex-start; }
-    #commands { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.5rem; width: 100%; }
+    #commands-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.12em; color: #3a4060;
+      text-transform: uppercase; margin-bottom: 0.75rem;
+      align-self: flex-start;
+    }
+    #commands { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.75rem; width: 100%; }
     .cmd-chip {
-      font-size: 12px; padding: 7px 14px; border: 1px solid #ddd;
-      border-radius: 20px; cursor: pointer; background: #f9f9f7;
-      color: #555; transition: all 0.12s; font-family: inherit;
+      font-size: 12px; padding: 8px 16px;
+      border: 1px solid #2a2d3a;
+      border-radius: 8px; cursor: pointer;
+      background: #1e2030; color: #8090b0;
+      transition: all 0.15s; font-family: inherit;
+      font-weight: 500;
     }
-    .cmd-chip:hover { border-color: #534AB7; color: #534AB7; background: #EEEDFE; }
+    .cmd-chip:hover { border-color: #6366f1; color: #a0a8f0; background: #22253a; }
 
-    #response-card { width: 100%; background: #f9f9f7; border: 1px solid #e5e5e0; border-radius: 12px; padding: 1rem 1.25rem; display: none; margin-bottom: 1rem; }
-    #response-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: #E1F5EE; color: #085041; display: inline-block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-    #response-text { font-size: 14px; line-height: 1.7; color: #222; }
+    #response-card {
+      width: 100%; background: #1e2030;
+      border: 1px solid #2a2d3a;
+      border-radius: 12px; padding: 1.25rem;
+      display: none; margin-bottom: 1.5rem;
+    }
+    #response-tag {
+      font-size: 10px; font-weight: 700;
+      padding: 3px 10px; border-radius: 6px;
+      background: #252840; color: #6366f1;
+      display: inline-block; margin-bottom: 10px;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      border: 1px solid #3a3d6e;
+    }
+    #response-text { font-size: 14px; line-height: 1.75; color: #c0c8e0; }
 
-    #voice-selector-wrap { width: 100%; margin-top: 1rem; border-top: 1px solid #e5e5e0; padding-top: 1rem; }
-    #voice-selector-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #aaa; text-transform: uppercase; margin-bottom: 0.6rem; }
-    #voice-selector { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    #voice-selector-wrap {
+      width: 100%; margin-top: 0.5rem;
+      border-top: 1px solid #2a2d3a;
+      padding-top: 1.25rem;
+    }
+    #voice-selector-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.12em; color: #3a4060;
+      text-transform: uppercase; margin-bottom: 0.75rem;
+      text-align: center;
+    }
+    #voice-selector { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 1.25rem; }
     .voice-chip {
-      font-size: 11px; padding: 5px 12px; border: 1px solid #ddd;
-      border-radius: 20px; cursor: pointer; background: #f9f9f7;
-      color: #555; font-family: inherit; transition: all 0.12s;
+      font-size: 11px; padding: 6px 14px;
+      border: 1px solid #2a2d3a;
+      border-radius: 6px; cursor: pointer;
+      background: #1e2030; color: #5a6080;
+      font-family: inherit; transition: all 0.15s;
+      font-weight: 500;
     }
-    .voice-chip.active { background: #534AB7; color: white; border-color: #534AB7; }
+    .voice-chip.active { background: #252840; color: #6366f1; border-color: #3a3d6e; }
+    .voice-chip:hover { border-color: #4a4d7a; color: #8090c0; }
 
-    #voice-note { font-size: 11px; color: #bbb; text-align: center; max-width: 360px; line-height: 1.6; margin-top: 1rem; }
+    #badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .badge { font-size: 10px; padding: 4px 12px; border-radius: 6px; font-weight: 600; letter-spacing: 0.05em; }
+    .badge-claude { background: #1e2030; color: #4a4d7a; border: 1px solid #2a2d3a; }
+    .badge-eleven { background: #1e2030; color: #4a4d7a; border: 1px solid #2a2d3a; }
+
+    #voice-note { font-size: 10px; color: #2a3050; text-align: center; max-width: 360px; line-height: 1.6; margin-top: 1rem; }
   </style>
 </head>
 <body>
 <div id="app">
   <div id="eleven-setup">
-    <h3>Enter your ElevenLabs API key</h3>
+    <h3>Enter Your ElevenLabs API Key</h3>
     <input type="password" id="eleven-key" placeholder="Your ElevenLabs key..." autocomplete="off">
     <button onclick="saveKey()">Connect</button>
     <p id="eleven-note">Your key stays local in this browser session only.</p>
@@ -137,11 +193,6 @@
     <div id="app-title">Hey, what do you need?</div>
     <div id="app-sub">Tap the orb and speak, or click a command</div>
 
-    <div id="badges">
-      <span class="badge badge-claude">Claude Sonnet 4.6</span>
-      <span class="badge badge-eleven">ElevenLabs Voice</span>
-    </div>
-
     <div id="orb-wrap">
       <div id="orb" onclick="toggleListen()">🎤</div>
       <div id="ring"></div>
@@ -150,16 +201,16 @@
     <div id="status-text">Ready</div>
     <div id="transcript-text"></div>
 
-    <button id="stop-btn" onclick="stopSpeaking()">⏹ Stop speaking</button>
+    <button id="stop-btn" onclick="stopSpeaking()">⏹ Stop Speaking</button>
 
     <div id="commands-label">Commands</div>
     <div id="commands">
-      <div class="cmd-chip" onclick="runCommand('Read my latest messages')">📬 Latest messages</div>
-      <div class="cmd-chip" onclick="runCommand('Summarize my unread messages')">📋 Summarize unread</div>
-      <div class="cmd-chip" onclick="runCommand('Any urgent messages I should know about?')">🔔 Urgent messages</div>
-      <div class="cmd-chip" onclick="runCommand('Who messaged me today?')">👤 Who messaged me</div>
-      <div class="cmd-chip" onclick="runCommand('Draft a friendly reply to my most recent message')">✏️ Draft a reply</div>
-      <div class="cmd-chip" onclick="runCommand('What should I focus on today?')">🎯 What to focus on</div>
+      <div class="cmd-chip" onclick="runCommand('Read my latest messages')">📬 Latest Messages</div>
+      <div class="cmd-chip" onclick="runCommand('Summarize my unread messages')">📋 Summarize Unread</div>
+      <div class="cmd-chip" onclick="runCommand('Any urgent messages I should know about?')">🔔 Urgent Messages</div>
+      <div class="cmd-chip" onclick="runCommand('Who messaged me today?')">👤 Who Messaged Me</div>
+      <div class="cmd-chip" onclick="runCommand('Draft a friendly reply to my most recent message')">✏️ Draft A Reply</div>
+      <div class="cmd-chip" onclick="runCommand('What should I focus on today?')">🎯 What To Focus On</div>
     </div>
 
     <div id="response-card">
@@ -174,6 +225,10 @@
         <button class="voice-chip" onclick="setVoice('onwK4e9ZLuTAKqWW03F9', this)">Daniel — British</button>
         <button class="voice-chip" onclick="setVoice('IKne3meq5aSn9XLyUdCD', this)">Charlie — Aussie</button>
         <button class="voice-chip" onclick="setVoice('EXAVITQu4vr4xnSDxMaL', this)">Bella — Clear</button>
+      </div>
+      <div id="badges">
+        <span class="badge badge-claude">Claude Sonnet 4.6</span>
+        <span class="badge badge-eleven">ElevenLabs Voice</span>
       </div>
     </div>
 
